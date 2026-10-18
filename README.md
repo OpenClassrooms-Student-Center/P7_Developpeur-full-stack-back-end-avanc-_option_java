@@ -8,27 +8,30 @@ pas de conteneur, pas d'automatisation, pas de monitoring. C'est à vous de les 
 
 ## Prérequis
 
-- Java 21 (JDK)
-- Maven 3.9 ou plus récent
+- Java 25 (JDK)
+
+Maven n'est pas à installer : le dépôt contient le wrapper (`./mvnw`, ou `mvnw.cmd` sous
+Windows), qui télécharge la bonne version au premier lancement. Si vous avez déjà Maven 3.9
+ou plus récent, `mvn` fonctionne aussi.
 
 ## Lancer l'application
 
 ```bash
-mvn clean install
+./mvnw clean install
 ```
 
 ```bash
 java -jar target/minilien-1.0.0.jar
 ```
 
-Vous pouvez aussi lancer `mvn spring-boot:run`.
+Vous pouvez aussi lancer `./mvnw spring-boot:run`.
 
 L'application répond sur http://localhost:8080.
 
 ## Lancer les tests
 
 ```bash
-mvn test
+./mvnw test
 ```
 
 ## L'API
