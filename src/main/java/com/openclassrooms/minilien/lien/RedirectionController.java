@@ -18,8 +18,8 @@ public class RedirectionController {
     }
 
     @GetMapping("/r/{code}")
-    public ResponseEntity<Void> rediriger(@PathVariable String code) {
-        Lien lien = service.visiter(code);
+    public ResponseEntity<Void> redirect(@PathVariable String code) {
+        Lien lien = service.registerVisit(code);
         return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(lien.getUrl())).build();
     }
 }

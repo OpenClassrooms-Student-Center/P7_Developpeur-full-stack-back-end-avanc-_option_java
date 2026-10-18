@@ -22,23 +22,23 @@ public class LienService {
     private final Map<String, Lien> liens = new ConcurrentHashMap<>();
     private final SecureRandom random = new SecureRandom();
 
-    public Lien creer(String url) {
-        verifierUrl(url);
+    public Lien create(String url) {
+        checkUrl(url);
         while (true) {
-            Lien lien = new Lien(genererCode(), url.trim(), Instant.now());
+            Lien lien = new Lien(generateCode(), url.trim(), Instant.now());
             if (liens.putIfAbsent(lien.getCode(), lien) == null) {
                 return lien;
             }
         }
     }
 
-    public List<Lien> lister() {
+    public List<Lien> list() {
         return liens.values().stream()
                 .sorted(Comparator.comparing(Lien::getCreeLe).reversed())
                 .toList();
     }
 
-    public Lien trouver(String code) {
+    public Lien find(String code) {
         Lien lien = liens.get(code);
         if (lien == null) {
             throw new LienIntrouvableException(code);
@@ -46,19 +46,19 @@ public class LienService {
         return lien;
     }
 
-    public Lien visiter(String code) {
-        Lien lien = trouver(code);
-        lien.enregistrerVisite();
+    public Lien registerVisit(String code) {
+        Lien lien = find(code);
+        lien.recordVisit();
         return lien;
     }
 
-    public void supprimer(String code) {
+    public void delete(String code) {
         if (liens.remove(code) == null) {
             throw new LienIntrouvableException(code);
         }
     }
 
-    private void verifierUrl(String url) {
+    private void checkUrl(String url) {
         if (url == null || url.isBlank()) {
             throw new UrlInvalideException("Le champ « url » est obligatoire.");
         }
@@ -76,7 +76,7 @@ public class LienService {
         }
     }
 
-    private String genererCode() {
+    private String generateCode() {
         StringBuilder code = new StringBuilder(LONGUEUR_CODE);
         for (int i = 0; i < LONGUEUR_CODE; i++) {
             code.append(ALPHABET.charAt(random.nextInt(ALPHABET.length())));

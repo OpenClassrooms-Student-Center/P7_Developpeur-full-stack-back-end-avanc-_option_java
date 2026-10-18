@@ -31,29 +31,29 @@ public class LienController {
     }
 
     @PostMapping
-    public ResponseEntity<LienDto> creer(@RequestBody(required = false) CreationLienRequete requete) {
-        Lien lien = service.creer(requete == null ? null : requete.url());
+    public ResponseEntity<LienDto> create(@RequestBody(required = false) CreationLienRequete requete) {
+        Lien lien = service.create(requete == null ? null : requete.url());
         return ResponseEntity.created(URI.create("/api/liens/" + lien.getCode()))
-                .body(LienDto.depuis(lien, baseUrl));
+                .body(LienDto.from(lien, baseUrl));
     }
 
     @GetMapping
-    public List<LienDto> lister() {
-        return service.lister().stream().map(lien -> LienDto.depuis(lien, baseUrl)).toList();
+    public List<LienDto> list() {
+        return service.list().stream().map(lien -> LienDto.from(lien, baseUrl)).toList();
     }
 
     @GetMapping("/{code}")
-    public LienDto consulter(@PathVariable String code) {
-        return LienDto.depuis(service.trouver(code), baseUrl);
+    public LienDto get(@PathVariable String code) {
+        return LienDto.from(service.find(code), baseUrl);
     }
 
     @DeleteMapping("/{code}")
-    public ResponseEntity<Void> supprimer(@PathVariable String code,
+    public ResponseEntity<Void> delete(@PathVariable String code,
                                           @RequestHeader(value = "X-Admin-Token", required = false) String jeton) {
         if (jeton == null || !jeton.equals(adminToken)) {
             throw new AccesRefuseException();
         }
-        service.supprimer(code);
+        service.delete(code);
         return ResponseEntity.noContent().build();
     }
 }

@@ -33,7 +33,7 @@ public class Lien {
         return visites.get();
     }
 
-    public void enregistrerVisite() {
+    public void recordVisit() {
         visites.incrementAndGet();
     }
 }
